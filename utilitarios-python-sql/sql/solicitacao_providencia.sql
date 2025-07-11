@@ -1,0 +1,16 @@
+SELECT 
+  SS.OC001_cod_ocorrencia AS NUMERO_OCORRENCIA,
+  SP.SR007_cod_solicitacao AS SOLICITACAO,
+  SS.SR007_aud_dat_inc AS DATA_SOLICITACAO,
+  SP.SR011_aud_dat_inc AS DATA_PROVIDENCIA,
+  U.SE001_nom_usuario AS USUARIO,
+  STP.SR010_nom_tipo_providencia AS TIPO_DE_PROVIDENCIA,
+  SP.SR011_obs_providencia AS DESCRICAO_PROVIDENCIA
+FROM SOFT.dbo.SR011_PROVIDENCIA AS SP WITH(NOLOCK)
+LEFT JOIN SOFT.dbo.SR007_SOLICITACAO AS SS 
+  ON SS.SR007_cod_solicitacao = SP.SR007_cod_solicitacao 
+LEFT JOIN SOFT.dbo.SR010_TIPO_PROVIDENCIA STP 
+  ON STP.SR010_cod_tipo_providencia = SP.SR010_cod_tipo_providencia 
+LEFT JOIN SOFT.dbo.SE001_USUARIO AS U
+  ON SP.SR011_aud_usu_inc = U.SE001_cod_usuario
+WHERE YEAR(SP.SR011_aud_dat_inc) IN (YEAR(GETDATE()), YEAR(GETDATE())-1);
